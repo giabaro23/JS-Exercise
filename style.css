@@ -119,6 +119,7 @@ body {
     width: 1400px;
     flex-wrap: wrap;
     justify-content: space-around;
+    min-height: 800px;
 }
 
 .card__item {

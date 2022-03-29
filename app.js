@@ -1,26 +1,33 @@
 var urlAPI = "http://localhost:3000/products";
 
-var ourRequest = new XMLHttpRequest();
-ourRequest.open("GET", urlAPI);
-ourRequest.onload = function() {
-    var ourData = JSON.parse(ourRequest.responseText);
-    renderCard(ourData);
+function loadProduct() {
+    var ourRequest = new XMLHttpRequest();
+    ourRequest.open("GET", urlAPI);
+    ourRequest.onload = function() {
+        var ourData = JSON.parse(ourRequest.responseText);
+        renderCard(ourData);
+    };
+    ourRequest.send();
+}
+
+window.onload = function() {
+    loadProduct();
 };
-ourRequest.send();
 
 function renderCard(data) {
+    console.log("render...");
     var cardItem = document.getElementById("main");
-    var totalProduct = document.querySelector('.total__product');
+    var totalProduct = document.querySelector(".total__product");
     var htmls = data.map((data) => {
         return `
-        <div id="card" class="card__item-${data.id} card__item card col-md-4" style="width: 18rem;">
+        <div id="card" class="card__item-${data.id} card__item card col-12 col-md-4" style="width: 18rem;">
             <img src="${data.img}" class="card-img-top" alt="...">
             <div class="card-body">
             <h5 class="card-title">${data.name}</h5>
             <p class="card-text">${data.description}</p>
             <h5 class="card-title">${data.price} đ</h5>
             <a href="" class="btn btn-primary">Add to card</a>
-            <a href="" class="btn btn-danger" onclick="handleDeleteCard(${data.id})">Remove</a>
+            <button type="button" class="btn btn-danger" onclick="handleDeleteCard(this, ${data.id})">Remove</button>
             </div>
         </div>
         `;
@@ -30,7 +37,6 @@ function renderCard(data) {
 }
 
 function createCard(data, callback) {
-
     var options = {
         method: "POST",
         body: JSON.stringify(data),
@@ -67,16 +73,29 @@ function handleCreateCard() {
         };
         console.log(formData);
 
-
         createCard(formData);
     };
     reader.readAsDataURL(file);
-
 }
 
+function handleDeleteCard(e, id) {
+    // var xhr = new XMLHttpRequest();
 
-function handleDeleteCard(id) {
-
+    // xhr.open("DELETE", urlAPI + "/" + id, true);
+    // xhr.onload = function() {
+    //     var res = JSON.parse(xhr.responseText);
+    //     console.log(res);
+    //     let cardItem = document.querySelector(".card__item-" + id);
+    //     if (cardItem) {
+    //         cardItem.remove();
+    //     }
+    //     // if (xhr.readyState == 4 && xhr.status == "200") {
+    //     //     console.table(users);
+    //     // } else {
+    //     //     console.error(users);
+    //     // }
+    // };
+    // xhr.send();
     var options = {
         method: "DELETE",
 
@@ -87,6 +106,7 @@ function handleDeleteCard(id) {
     fetch(urlAPI + '/' + id, options)
         .then(function(response) {
             response.json();
+
         })
         .then(function() {
             let cardItem = document.querySelector('.card__item-' + id);
@@ -99,21 +119,21 @@ function handleDeleteCard(id) {
         });
 }
 
-// cart
+// cart modal
 
-var btnOpenCart = document.querySelector('.open__cart');
-var cartModal = document.querySelector('.cart__modal');
-var btnCloseCart = document.querySelector('.btn__close__cart');
+var btnOpenCart = document.querySelector(".open__cart");
+var cartModal = document.querySelector(".cart__modal");
+var btnCloseCart = document.querySelector(".btn__close__cart");
 
 function toggleModal(e) {
     e.preventDefault();
-    cartModal.classList.toggle('hide')
+    cartModal.classList.toggle("hide");
 }
 
-btnOpenCart.addEventListener('click', toggleModal);
-btnCloseCart.addEventListener('click', toggleModal);
-cartModal.addEventListener('click', function(e) {
+btnOpenCart.addEventListener("click", toggleModal);
+btnCloseCart.addEventListener("click", toggleModal);
+cartModal.addEventListener("click", function(e) {
     if (e.target == e.currentTarget) {
         toggleModal();
     }
-})
+});
