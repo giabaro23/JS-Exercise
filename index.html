@@ -110,7 +110,7 @@
     </section>
 
     <button type="button" class="btn__open-modal btn btn-warning text-white" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat" id="open-modal">Add product</button>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade modal__add__card hide" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -139,7 +139,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" onclick="handleCreateCard()" class="btn btn-primary" id="btn-add">Add</button>
+                    <button type="button" onclick="handleCreateCard()" class="btn btn-primary" id="btn-add" data-bs-dismiss="modal">Add</button>
                 </div>
             </div>
         </div>

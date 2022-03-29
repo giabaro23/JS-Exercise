@@ -1,21 +1,16 @@
 var urlAPI = "http://localhost:3000/products";
 
-function loadProduct() {
-    var ourRequest = new XMLHttpRequest();
-    ourRequest.open("GET", urlAPI);
-    ourRequest.onload = function() {
-        var ourData = JSON.parse(ourRequest.responseText);
-        renderCard(ourData);
-    };
-    ourRequest.send();
-}
 
-window.onload = function() {
-    loadProduct();
+var ourRequest = new XMLHttpRequest();
+ourRequest.open("GET", urlAPI);
+ourRequest.onload = function() {
+    var ourData = JSON.parse(ourRequest.responseText);
+    renderCard(ourData);
 };
+ourRequest.send();
+
 
 function renderCard(data) {
-    console.log("render...");
     var cardItem = document.getElementById("main");
     var totalProduct = document.querySelector(".total__product");
     var htmls = data.map((data) => {
@@ -36,7 +31,7 @@ function renderCard(data) {
     totalProduct.innerHTML = data.length;
 }
 
-function createCard(data, callback) {
+function createCard(data) {
     var options = {
         method: "POST",
         body: JSON.stringify(data),
@@ -48,12 +43,10 @@ function createCard(data, callback) {
         .then(function(response) {
             response.json();
         })
-        .then(function() {
-            console.log(callback);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+
+    .catch((err) => {
+        console.log(err);
+    });
 }
 
 function handleCreateCard() {
@@ -61,6 +54,7 @@ function handleCreateCard() {
     var description = document.querySelector("#description").value;
     var price = document.querySelector("#price").value;
     var file = document.getElementById("imgFile").files[0];
+
     // let img = URL.createObjectURL(file);
 
     var reader = new FileReader();
@@ -71,11 +65,11 @@ function handleCreateCard() {
             price: price,
             img: reader.result,
         };
-        console.log(formData);
 
         createCard(formData);
     };
     reader.readAsDataURL(file);
+
 }
 
 function handleDeleteCard(e, id) {
@@ -103,13 +97,12 @@ function handleDeleteCard(e, id) {
             "Content-type": "application/json",
         },
     };
-    fetch(urlAPI + '/' + id, options)
+    fetch(urlAPI + "/" + id, options)
         .then(function(response) {
             response.json();
-
         })
         .then(function() {
-            let cardItem = document.querySelector('.card__item-' + id);
+            let cardItem = document.querySelector(".card__item-" + id);
             if (cardItem) {
                 cardItem.remove();
             }
