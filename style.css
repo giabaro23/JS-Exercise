@@ -119,13 +119,37 @@ body {
     width: 1400px;
     flex-wrap: wrap;
     justify-content: space-around;
-    min-height: 800px;
+    min-height: 700px;
 }
 
 .card__item {
     margin: 0px 5px;
     margin-top: 20px;
     min-height: 400px;
+    max-height: 600px;
+    position: relative;
+}
+
+.card__item__body {
+    max-height: 250px;
+}
+
+.card__btn__remove {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.card__btn__add {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+
+.card__img {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
 }
 
 .btn__open-modal {

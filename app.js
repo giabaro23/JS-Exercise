@@ -1,13 +1,15 @@
 var urlAPI = "http://localhost:3000/products";
 
-
 var ourRequest = new XMLHttpRequest();
 ourRequest.open("GET", urlAPI);
 ourRequest.onload = function() {
     var ourData = JSON.parse(ourRequest.responseText);
     renderCard(ourData);
+    window.localStorage.setItem('products', JSON.stringify(ourData));
+
 };
 ourRequest.send();
+
 
 
 function renderCard(data) {
@@ -16,13 +18,13 @@ function renderCard(data) {
     var htmls = data.map((data) => {
         return `
         <div id="card" class="card__item-${data.id} card__item card col-12 col-md-4" style="width: 18rem;">
-            <img src="${data.img}" class="card-img-top" alt="...">
-            <div class="card-body">
+            <img src="${data.img}" class="card-img-top card__img" alt="...">
+            <div class="card-body card__item__body">
             <h5 class="card-title">${data.name}</h5>
             <p class="card-text">${data.description}</p>
-            <h5 class="card-title">${data.price} đ</h5>
-            <a href="" class="btn btn-primary">Add to card</a>
-            <button type="button" class="btn btn-danger" onclick="handleDeleteCard(this, ${data.id})">Remove</button>
+            <h5 class="card-title">${data.price} VND</h5>
+            <button type='button' class="btn btn-primary card__btn__add" onclick='addToCart(${data.id})'>Add to card</button>
+            <button type="button" class="btn btn-danger card__btn__remove disabled" onclick="handleDeleteCard(this, ${data.id})">Remove</button>
             </div>
         </div>
         `;
@@ -54,8 +56,8 @@ function handleCreateCard() {
     var description = document.querySelector("#description").value;
     var price = document.querySelector("#price").value;
     var file = document.getElementById("imgFile").files[0];
-
-    // let img = URL.createObjectURL(file);
+    let productData = JSON.parse(localStorage.getItem('products'))
+        // let img = URL.createObjectURL(file);
 
     var reader = new FileReader();
     reader.onloadend = function() {
@@ -67,9 +69,11 @@ function handleCreateCard() {
         };
 
         createCard(formData);
+        productData.push(formData);
+        console.log(productData);
+        renderCard(productData);
     };
     reader.readAsDataURL(file);
-
 }
 
 function handleDeleteCard(e, id) {
@@ -130,3 +134,37 @@ cartModal.addEventListener("click", function(e) {
         toggleModal();
     }
 });
+var productCartData = [];
+
+// function addToCart(id) {
+//     var ourRequest = new XMLHttpRequest();
+//     ourRequest.open("GET", urlAPI);
+//     ourRequest.onload = function() {
+//         var ourData = JSON.parse(ourRequest.responseText);
+//         for (i = 0; i < ourData.length; i++) {
+//             if (ourData[i].id === id) {
+//                 productCartData.push(ourData[i]);
+//                 console.log(productCartData);
+//                 localStorage.setItem("a", JSON.stringify(productCartData));
+//                 var cardItem = document.querySelector('.cart__modal__body');
+//                 var htmls = productCartData.map((data) => {
+//                     return `
+// <table class="table">
+
+//   <tbody>
+
+//     <tr>
+
+//       <td colspan="2">${data.name}</td>
+//       <td>${data.description}</td>
+//     </tr>
+//   </tbody>
+// </table>
+// `
+//                 });
+//                 cardItem.innerHTML = htmls.join("");
+//             }
+//         }
+//     };
+//     ourRequest.send();
+// }
