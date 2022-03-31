@@ -5,32 +5,40 @@ ourRequest.open("GET", urlAPI);
 ourRequest.onload = function() {
     var ourData = JSON.parse(ourRequest.responseText);
     renderCard(ourData);
-    window.localStorage.setItem('products', JSON.stringify(ourData));
-
+    window.localStorage.setItem("products", JSON.stringify(ourData));
 };
 ourRequest.send();
 
-
-
 function renderCard(data) {
-    var cardItem = document.getElementById("main");
+    var listProduct = document.querySelector(".product");
     var totalProduct = document.querySelector(".total__product");
+    var productCartData = JSON.parse(localStorage.getItem("cart")) || [];
     var htmls = data.map((data) => {
         return `
-        <div id="card" class="card__item-${data.id} card__item card col-12 col-md-4" style="width: 18rem;">
-            <img src="${data.img}" class="card-img-top card__img" alt="...">
-            <div class="card-body card__item__body">
-            <h5 class="card-title">${data.name}</h5>
-            <p class="card-text">${data.description}</p>
-            <h5 class="card-title">${data.price} VND</h5>
-            <button type='button' class="btn btn-primary card__btn__add" onclick='addToCart(${data.id})'>Add to card</button>
-            <button type="button" class="btn btn-danger card__btn__remove disabled" onclick="handleDeleteCard(this, ${data.id})">Remove</button>
-            </div>
+        <div class="product__item product__item-${data.id}">
+        <div class="product__item__img">
+            <img src="${data.img}" alt="">
         </div>
+        <div class="product__item__name">
+            <h5>${data.name}</h5>
+        </div>
+        <div class="product__item__description">
+            <span>${data.description}</span>
+        </div>
+        <div class="product__item__price">
+            <h4>$ ${data.price}</h4>
+        </div>
+        
+        <div class="product__item__btn-add">
+            <button onclick="addToCart(${data.id})"><i class="fa-solid fa-cart-plus"></i></button>
+        </div>
+
+    </div>
+
         `;
     });
-    cardItem.innerHTML = htmls.join("");
-    totalProduct.innerHTML = data.length;
+    listProduct.innerHTML = htmls.join("");
+    totalProduct.innerHTML = productCartData.length;
 }
 
 function createCard(data) {
@@ -56,8 +64,8 @@ function handleCreateCard() {
     var description = document.querySelector("#description").value;
     var price = document.querySelector("#price").value;
     var file = document.getElementById("imgFile").files[0];
-    let productData = JSON.parse(localStorage.getItem('products'))
-        // let img = URL.createObjectURL(file);
+    let productData = JSON.parse(localStorage.getItem("products"));
+    // let img = URL.createObjectURL(file);
 
     var reader = new FileReader();
     reader.onloadend = function() {
@@ -70,13 +78,15 @@ function handleCreateCard() {
 
         createCard(formData);
         productData.push(formData);
-        console.log(productData);
+
         renderCard(productData);
+
     };
     reader.readAsDataURL(file);
+
 }
 
-function handleDeleteCard(e, id) {
+function handleDeleteCard(id) {
     // var xhr = new XMLHttpRequest();
 
     // xhr.open("DELETE", urlAPI + "/" + id, true);
@@ -106,7 +116,7 @@ function handleDeleteCard(e, id) {
             response.json();
         })
         .then(function() {
-            let cardItem = document.querySelector(".card__item-" + id);
+            let cardItem = document.querySelector(".product__item-" + id);
             if (cardItem) {
                 cardItem.remove();
             }
@@ -118,53 +128,32 @@ function handleDeleteCard(e, id) {
 
 // cart modal
 
-var btnOpenCart = document.querySelector(".open__cart");
-var cartModal = document.querySelector(".cart__modal");
-var btnCloseCart = document.querySelector(".btn__close__cart");
+// var btnOpenCart = document.querySelector(".open__cart");
+// var cartModal = document.querySelector(".cart__modal");
+// var btnCloseCart = document.querySelector(".btn__close__cart");
 
-function toggleModal(e) {
-    e.preventDefault();
-    cartModal.classList.toggle("hide");
-}
-
-btnOpenCart.addEventListener("click", toggleModal);
-btnCloseCart.addEventListener("click", toggleModal);
-cartModal.addEventListener("click", function(e) {
-    if (e.target == e.currentTarget) {
-        toggleModal();
-    }
-});
-var productCartData = [];
-
-// function addToCart(id) {
-//     var ourRequest = new XMLHttpRequest();
-//     ourRequest.open("GET", urlAPI);
-//     ourRequest.onload = function() {
-//         var ourData = JSON.parse(ourRequest.responseText);
-//         for (i = 0; i < ourData.length; i++) {
-//             if (ourData[i].id === id) {
-//                 productCartData.push(ourData[i]);
-//                 console.log(productCartData);
-//                 localStorage.setItem("a", JSON.stringify(productCartData));
-//                 var cardItem = document.querySelector('.cart__modal__body');
-//                 var htmls = productCartData.map((data) => {
-//                     return `
-// <table class="table">
-
-//   <tbody>
-
-//     <tr>
-
-//       <td colspan="2">${data.name}</td>
-//       <td>${data.description}</td>
-//     </tr>
-//   </tbody>
-// </table>
-// `
-//                 });
-//                 cardItem.innerHTML = htmls.join("");
-//             }
-//         }
-//     };
-//     ourRequest.send();
+// function toggleModal(e) {
+//     e.preventDefault();
+//     cartModal.classList.toggle("hide");
 // }
+
+// btnOpenCart.addEventListener("click", toggleModal);
+// btnCloseCart.addEventListener("click", toggleModal);
+// cartModal.addEventListener("click", function(e) {
+//     if (e.target == e.currentTarget) {
+//         toggleModal();
+//     }
+// });
+
+function addToCart(id) {
+    var productCartData = JSON.parse(localStorage.getItem("cart")) || [];
+    var listProducts = JSON.parse(localStorage.getItem("products"));
+    for (i = 0; i < listProducts.length; i++) {
+        if (listProducts[i].id === id) {
+            productCartData.push(listProducts[i]);
+        }
+    }
+    localStorage.setItem("cart", JSON.stringify(productCartData));
+    var totalProduct = document.querySelector(".total__product");
+    totalProduct.innerHTML = productCartData.length;
+}
