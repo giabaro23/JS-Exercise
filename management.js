@@ -84,6 +84,7 @@ function handleCreateCard() {
 
     };
     reader.readAsDataURL(file);
+    resetForm();
 
 }
 
@@ -157,4 +158,11 @@ function addToCart(id) {
     localStorage.setItem("cart", JSON.stringify(productCartData));
     var totalProduct = document.querySelector(".total__product");
     totalProduct.innerHTML = productCartData.length;
+}
+
+function resetForm() {
+    document.querySelector("#name").value = '';
+    document.querySelector("#description").value = '';
+    document.querySelector("#price").value = '';
+    document.getElementById("imgFile").value = '';
 }
