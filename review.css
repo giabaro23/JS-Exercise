@@ -1,0 +1,63 @@
+.review {
+    width: 700px;
+    background: white;
+    padding: 30px 40px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 5px;
+}
+
+.review h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.review__info {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.review__info h5 {
+    min-width: 200px;
+}
+
+.review__info p {
+    margin: 0;
+    padding: 0;
+}
+
+.review__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review__btn button {
+    background: #343a3a;
+    border: none;
+    border-radius: 10px;
+    transition: 0.3s;
+    height: 50px;
+    width: 300px;
+    color: white;
+    font-weight: 600;
+}
+
+.review__btn:hover button {
+    background: rgba(52, 58, 58, 0.8);
+}
+
+.message__btn a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    background: #343a3a;
+    border-radius: 5px;
+}
+
+.message__btn:hover a {
+    background: rgba(52, 58, 58, 0.8);
+}

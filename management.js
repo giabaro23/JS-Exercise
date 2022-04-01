@@ -30,8 +30,8 @@ function renderCard(data) {
             <h4>$ ${data.price}</h4>
         </div>
         
-        <div class="product__item__btn-add">
-            <button onclick="addToCart(${data.id})"><i class="fa-solid fa-cart-plus"></i></button>
+        <div class="product__item__btn-delete">
+            <button class="btn btn-danger" onclick="handleDeleteCard(${data.id})">Remove</button>
         </div>
 
     </div>

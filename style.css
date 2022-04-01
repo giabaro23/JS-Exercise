@@ -169,3 +169,20 @@ body {
 .hide {
     display: none;
 }
+
+.manage__product-btn {
+    margin: 20px 0px 30px 30px;
+}
+
+.manage__product-btn a {
+    padding: 15px 30px;
+    background: #343a3a;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.manage__product-btn:hover a {
+    background: rgba(52, 58, 58, 0.8);
+}
